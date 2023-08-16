@@ -2,21 +2,11 @@ const express = require('express');
 const app = express();
 const PORT = 3000;
 const db = require('./db');
+const routesCategories = require('./routes/categories');
 
-app.get('/', (req, res) => {
-  res.send("Hello Word")
-})
+app.use(express.json());
 
-app.get("/categories", (req, res) => {
-  db.query("SELECT * FROM categories", (error, response) => {
-    if(error) {
-      return res.status(500).json(error);
-    }
-
-    return res.status(200).json(response.rows);
-
-  });
-});
+app.use('/categories', routesCategories);
 
 app.listen(PORT, () => {
   db.connect()
@@ -27,4 +17,4 @@ app.listen(PORT, () => {
       throw new Error(error)
     });
   console.log("Escutando na porta 3000")
-})
+});
